@@ -10,7 +10,7 @@
     hello welcome,{{request.user.username}}
 
     {% if not blogs %}
-        <p>You dont have anyt blogs yet.. <a href="{% url 'postblog' %}">Add one</a></p>
+        <p>You dont have any blogs yet.. <a href="{% url 'postblog' %}">Add one</a></p>
     {% else %}    
         {% for blog in blogs %}
             <p>{{blog.title}}</p>
@@ -21,7 +21,7 @@
         {% endfor %}
     {% endif %}    
     {% if not questions %}
-<p>You dont have anyt questions yet.. <a href="{% url 'postqn' %}">Ask Question</a></p>
+<p>You dont have any questions yet.. <a href="{% url 'postqn' %}">Ask Question</a></p>
 {% else %}    
     {% for question in questions %}
         <p>{{question.title}}</p>

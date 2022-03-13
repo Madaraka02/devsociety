@@ -123,6 +123,9 @@ def question_details(request, slug):
             accept = form.save(commit=False)
             accept.is_helpful = question
             # answer.author = request.user
+                # question
+                # author
+                # body
             accept.save()
             return redirect('question_details', slug=question.slug)
 
