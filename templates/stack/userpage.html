@@ -4,15 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>userpage</title>
+    <title>User page</title>
 </head>
 <body>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.media}}
-        {{form.as_p}}
-        <button type="submit">add</button>
-    </form>
-    
+    hello welcome,{{request.user.username}}
+
+    {% if not blogs %}
+        <p>You dont have anyt blogs yet.. <a href="{% url 'postblog' %}">Add one</a></p>
+    {% else %}    
+        {% for blog in blogs %}
+            <p>{{blog.title}}</p>
+            {{blog.author.username}}
+            <a href="{% url 'postblog' %}">Add new blog</a>
+            <a href="{% url 'edit_blog' blog.id %}">edit</a>
+            <a href="{% url 'delete_blog' blog.id %}">delete</a>
+        {% endfor %}
+    {% endif %}    
+    {% if not questions %}
+<p>You dont have anyt questions yet.. <a href="{% url 'postqn' %}">Ask Question</a></p>
+{% else %}    
+    {% for question in questions %}
+        <p>{{question.title}}</p>
+        {{question.author.username}}
+        <a href="{% url 'postqn' %}">Ask Question</a>
+        <a href="{% url 'edit_qn' question.id %}">Edit</a>
+        <a href="{% url 'delete_qn' question.id %}">Delete</a>
+    {% endfor %}
+{% endif %}
 </body>
 </html>

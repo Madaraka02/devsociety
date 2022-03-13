@@ -9,7 +9,7 @@ from ckeditor.fields import RichTextField
 class Blog(models.Model):
     title = models.CharField(max_length=300, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.FileField(null=True)
+    image = models.FileField(null=True, upload_to='blog/images')
     slug = models.SlugField(null=True)
     content = RichTextField()
     date_added = models.DateTimeField(auto_now_add=True)
@@ -25,7 +25,7 @@ class Blog(models.Model):
 class Comment(models.Model):
     blog =  models.ForeignKey(Blog, on_delete=models.CASCADE,  null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    body = RichTextField(null=True)
+    comment = RichTextField(null=True)
     date_added = models.DateTimeField(auto_now_add=True, null=True)
     
 

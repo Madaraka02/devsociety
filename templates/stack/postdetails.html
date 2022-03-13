@@ -15,18 +15,38 @@
     {% else %}
     {{total_likes}} Like{{total_likes |pluralize}}
     {% endif %}
-    <form action="{% url 'like_blog' blog.slug %}" method="post">
-        {% csrf_token %}
-        {% if is_liked %}
-        <button name="blog_slug" value="{{blog.slug}}" type="submit">Dislike</button>
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'like_blog' blog.slug %}" method="post">
+          {% csrf_token %}
+          {% if is_liked %}
+          <button name="blog_slug" value="{{blog.slug}}" type="submit">Dislike</button>
+          {% else %}
+          <button name="blog_slug" value="{{blog.slug}}" type="submit">like</button>
+          {% endif %}
+        </form>
+        {% if user.is_authenticated %}
+          {% if user.id == blog.author.id %}
+          <a href="{% url 'edit_blog' blog.id %}">edit</a>
+          {% endif %}
+        {% endif %}
+        {% if not comments %}
+        <p>No comments yet</p>
         {% else %}
-        <button name="blog_slug" value="{{blog.slug}}" type="submit">like</button>
+        <h6>Top Comments</h6>
+          {% for comment in comments %}
+            <h2><i>by {{comment.author.username}}</i></h2>
+            <P>{{comment.comment |safe}}
+              <span><small><i>{{comment.date_added}}</i></small></span>
+            </P>
+            
+          {% endfor %}
         {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.media}}
+          {{form.as_p}}
+          <button type="submit">Add comment</button>
       </form>
-      {% if user.is_authenticated %}
-        {% if user.id == blog.author.id %}
-        <a href="{% url 'edit_blog' blog.id %}">edit</a>
-        {% endif %}
-      {% endif %}
+    {% endif %}
 </body>
 </html>

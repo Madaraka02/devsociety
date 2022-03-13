@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ques details</title>
+</head>
+<body>
+
+    {{question.title}} {{question.author}}
+    {{question.content |safe}}
+    {% if user.id == question.author.id %}
+    <a href="{% url 'edit_qn' question.id %}">Edit</a>
+    <a href="{% url 'delete_qn' question.id %}">Delete</a>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    {% if not answers %}
+    <p>No answers yet</p>
+    {% else %}
+    <h6>Top answers</h6>
+      {% for answer in answers %}
+        <h2><i>by {{answer.author.username}}</i></h2>
+        <P>{{answer.body |safe}}
+          <span><small><i>{{answer.date_added}}</i></small></span>
+        </P>
+        {% if user.id == answer.author.id %}
+        <a href="{% url 'update_ans' answer.id %}">Edit</a>
+        {% endif %}
+
+        {% if total_upvotes == 0 %}
+        no upvotes
+        {% else %}
+        {{total_upvotes}} upvote{{total_upvotes |pluralize}}
+        {% endif %}
+
+
+      {% endfor %}
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.media}}
+        {{form.as_p}}
+        <button type="submit">Add Answer</button>
+    </form>
+    {% endif %}
+</body>
+</html>

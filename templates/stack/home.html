@@ -10,7 +10,11 @@
   <h2>Homepage</h2>
   {% if request.user.is_authenticated %}
     <p>Hello {{ user.username }}!</p>
-    <a href="{% url 'postblog' %}">new blog</a>
+    <a href="{% url 'postblog' %}">create a blog</a>
+    <a href="{% url 'postqn' %}">Ask Question</a>
+    <a href="{% url 'user_page' %}">View all your blogs</a>
+    {% else %}
+     Login to create blogs and ask tech related questions <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
     {% endif %}
 <div>
   {% for blog in blogs %}
@@ -20,6 +24,13 @@
   
   {% endfor %}
   <br>
+  <h6>Questions</h6>
+  {% for question  in questions %}
+  <p>
+    <a href="{% url 'question_details' question.slug %}">
+    {{question.title}} posted by <i>{{question.author}}</i></a></p>
+  
+  {% endfor %}
 
 </div>
     
