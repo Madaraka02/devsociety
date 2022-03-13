@@ -113,8 +113,21 @@ def userposts(request):
 def question_details(request, slug):
     question = get_object_or_404(Question, slug=slug)
     answers = Answer.objects.filter(question=question).order_by('-id')[:2]
-    
+
+    accept = AcceptForm()
     form = AnswerForm()
+    if request.method =='POST':
+        accept = AcceptForm(request.POST)
+
+        if form.is_valid():
+            accept = form.save(commit=False)
+            accept.is_helpful = question
+            # answer.author = request.user
+            accept.save()
+            return redirect('question_details', slug=question.slug)
+
+    
+   
     if request.method =='POST':
         form = AnswerForm(request.POST)
 
@@ -130,6 +143,7 @@ def question_details(request, slug):
         'answers':answers,
         # 'total_upvotes':answer.total_upvotes(),
         'form':form,
+        'accept':accept,
     }
     return render(request, 'stack/questiondetails.html', context)
 

@@ -11,6 +11,7 @@
     {{question.title}} {{question.author}}
     {{question.content |safe}}
     {% if user.id == question.author.id %}
+
     <a href="{% url 'edit_qn' question.id %}">Edit</a>
     <a href="{% url 'delete_qn' question.id %}">Delete</a>
     {% endif %}
@@ -27,14 +28,20 @@
         {% if user.id == answer.author.id %}
         <a href="{% url 'update_ans' answer.id %}">Edit</a>
         {% endif %}
-
-        {% if total_upvotes == 0 %}
-        no upvotes
-        {% else %}
-        {{total_upvotes}} upvote{{total_upvotes |pluralize}}
+        {% if user.id == question.author.id %}
+          <p>accept answer</p>
+          <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{accept.as_p}}
+            <button type="submit">Accept Answer</button>
+        </form>
         {% endif %}
 
+        {% if answer.is_helpful == True%}
+          <p>This is correct it helped solve my issue</p>
+        {% endif %}
 
+          
       {% endfor %}
     {% endif %}
     <form action="" method="post" enctype="multipart/form-data">

@@ -20,11 +20,8 @@ class Answer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     body = RichTextField(null=True)
     date_added = models.DateTimeField(auto_now_add=True, null=True)
-    is_helpful = models.BooleanField(default=False, null=True, blank=True)
+    is_answer_helpful = models.BooleanField(default=False, null=True, blank=True)
     # up_votes = models.ManyToManyField(User, related_name="upvotes", blank=True)
 
     def __str__(self):
         return self.question.title
-
-    def total_upvotes(self):
-        return self.up_votes.count()    

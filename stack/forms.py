@@ -14,3 +14,8 @@ class AnswerForm(ModelForm):
     class Meta:
         model = Answer
         fields = ['body']        
+
+class AcceptForm(ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['is_answer_helpful']           
